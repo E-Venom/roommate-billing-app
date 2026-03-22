@@ -1,0 +1,19 @@
+Title: Roommates Bill
+
+Description: An application that gets has input the amount of a bill for a particular period
+and the days that each of the roommates stayed in the house for that period
+and returns how much each roommate has to pay. It also generates a PDF report stating the names
+of the roommates, the period, and how much each of them need to pay.
+
+Object Types(Classes):
+    o	Bill:
+        	amount
+        	period
+    o	Roommates:
+        	name
+        	days_in_house
+        	pays(bill)
+    o	PDFReport:
+        	filename
+        	generate_pdf(roomate1, … roommateN, bill)
+

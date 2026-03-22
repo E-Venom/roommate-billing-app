@@ -1,0 +1,69 @@
+class Bill:
+    """
+    Object that contains data about a bill one must pay.
+    Data includes:
+        - amount
+        - period
+    """
+
+    def __init__(self, amount, period):
+        self.amount = amount
+        self.period = period
+
+
+class Roommate:
+    """
+    Creates a roommate person who lives in the apartment
+    and pays a share of the bill.
+    """
+
+    def __init__(self, name, days_in_house):
+        self.name = name
+        self.days_in_house = days_in_house
+
+    def pays(self, bill, other_roommate):
+        """
+        Calculates this roommate's share of the bill based on time spent in the house.
+        Args:
+            bill (Bill): The bill to be split.
+            roommate2 (Roommate): The other roommate sharing the bill.
+        Returns:
+            float: The amount this roommate needs to pay.
+        Notes:
+            The bill is split proportionally based on the number of days
+            each roommate stayed in the house.
+        Raises:
+            ZeroDivisionError: If both roommates have zero days in the house.
+        """
+        if self.days_in_house == 0 and other_roommate.days_in_house == 0:
+            raise ZeroDivisionError("Both roommate have zero days in the house.")
+
+        weight = self.days_in_house / (self.days_in_house + other_roommate.days_in_house)
+        amount_to_pay = weight * bill.amount
+        return amount_to_pay
+
+
+class PDFReport:
+    """
+    Creates a PDF file that contains data about
+    the roommates such as their names, their amount due,
+    and the period of the bill.
+    """
+
+    def __init__(self, filename):
+        self.filename = filename
+
+    def generate_pdf(self, roommate1, roommate2, bill):
+        pass
+
+# Testing what is implemented so far
+the_bill = Bill(amount=120, period="March 2024")
+roommate1 = Roommate(name="John", days_in_house=20)
+roommate2 = Roommate(name="Mary", days_in_house=25)
+roommate1_payment = roommate1.pays(bill=the_bill, other_roommate=roommate2)
+roommate2_payment = roommate2.pays(bill=the_bill, other_roommate=roommate1)
+
+assert round(roommate1_payment + roommate2_payment) == the_bill.amount
+
+print(f'{roommate1.name} pays: ${roommate1_payment:.2f}')
+print(f'{roommate2.name} pays: ${roommate2_payment:.2f}')
