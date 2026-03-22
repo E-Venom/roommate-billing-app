@@ -56,6 +56,9 @@ class PDFReport:
         self.filename = filename
 
     def generate_pdf(self, roommate1, roommate2, bill):
+        roommate1_payment = f'${roommate1.pays(bill=bill, other_roommate=roommate2):.2f}'
+        roommate2_payment = f'${roommate2.pays(bill=bill, other_roommate=roommate1):.2f}'
+
         # PDF parameters:
         # - 'P' = portrait mode
         # - 'pt' = unit of measurement, point (1/72 inch), i.e. 12pt font for PDF
@@ -67,6 +70,9 @@ class PDFReport:
         # Add a page to PDF
         pdf.add_page()
 
+        # Add house icon
+        pdf.image(name="house.png", w=30, h=30)
+
         # Set font a section of the PDF and insert title
         pdf.set_font("Arial", size=24, style='B')
         pdf.cell(w=0, h=80, txt="Roommates Bill", border=1, align='C', ln=1)
@@ -77,7 +83,11 @@ class PDFReport:
 
         # Insert name and amount to pay for roommate1
         pdf.cell(w=100, h=40, txt=roommate1.name, border=1)
-        pdf.cell(w=150, h=40, txt=f'${roommate1.pays(bill=bill, other_roommate=roommate2):.2f}', border=1)
+        pdf.cell(w=150, h=40, txt=roommate1_payment, border=1, ln=1)
+
+        # Insert name and amount to pay for roommate2
+        pdf.cell(w=100, h=40, txt=roommate2.name, border=1)
+        pdf.cell(w=150, h=40, txt=roommate2_payment, border=1)
 
         pdf.output(self.filename)
 
