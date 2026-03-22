@@ -1,3 +1,5 @@
+from fpdf import FPDF
+
 class Bill:
     """
     Object that contains data about a bill one must pay.
@@ -26,7 +28,7 @@ class Roommate:
         Calculates this roommate's share of the bill based on time spent in the house.
         Args:
             bill (Bill): The bill to be split.
-            roommate2 (Roommate): The other roommate sharing the bill.
+            other_roommate (Roommate): The other roommate sharing the bill.
         Returns:
             float: The amount this roommate needs to pay.
         Notes:
@@ -54,10 +56,33 @@ class PDFReport:
         self.filename = filename
 
     def generate_pdf(self, roommate1, roommate2, bill):
-        pass
+        # PDF parameters:
+        # - 'P' = portrait mode
+        # - 'pt' = unit of measurement, point (1/72 inch), i.e. 12pt font for PDF
+        # - 'A4' = standard international paper size
+
+        # Create instance of PDF
+        pdf = FPDF(orientation="P", unit="pt", format='A4')
+
+        # Add a page to PDF
+        pdf.add_page()
+
+        # Set font a section of the PDF and insert title
+        pdf.set_font("Arial", size=24, style='B')
+        pdf.cell(w=0, h=80, txt="Roommates Bill", border=1, align='C', ln=1)
+
+        # Insert Period label and value
+        pdf.cell(w=100, h=40, txt="Period:", border=1)
+        pdf.cell(w=150, h=40, txt=bill.period, border=1, ln=1)
+
+        # Insert name and amount to pay for roommate1
+        pdf.cell(w=100, h=40, txt=roommate1.name, border=1)
+        pdf.cell(w=150, h=40, txt=f'${roommate1.pays(bill=bill, other_roommate=roommate2):.2f}', border=1)
+
+        pdf.output(self.filename)
 
 # Testing what is implemented so far
-the_bill = Bill(amount=120, period="March 2024")
+the_bill = Bill(amount=120, period="March 2022")
 roommate1 = Roommate(name="John", days_in_house=20)
 roommate2 = Roommate(name="Mary", days_in_house=25)
 roommate1_payment = roommate1.pays(bill=the_bill, other_roommate=roommate2)
@@ -67,3 +92,6 @@ assert round(roommate1_payment + roommate2_payment) == the_bill.amount
 
 print(f'{roommate1.name} pays: ${roommate1_payment:.2f}')
 print(f'{roommate2.name} pays: ${roommate2_payment:.2f}')
+
+pdf_report = PDFReport(filename="Report1.pdf")
+pdf_report.generate_pdf(roommate1=roommate1, roommate2=roommate2, bill=the_bill)
