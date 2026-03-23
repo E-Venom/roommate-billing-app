@@ -3,7 +3,7 @@ from roommate import Bill, Roommate
 
 # CLI - COMMAND LINE (USER) INTERFACE IMPLEMENTATION
 bill_amount = float(input("Please enter the bill's amount: "))
-period = input("Please is the billing period? E.g. Feb. 2021: ")
+period = input("Please enter the billing period (i.e. Feb. 2021): ")
 name_roommate1 = input("Please enter the name of roommate1: ")
 name_roommate2 = input("Please enter the name of roommate2: ")
 roommate1_days_in_house = int(input(f"Please enter the number of days {name_roommate1} stayed in the house for {period}: "))
