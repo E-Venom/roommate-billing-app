@@ -1,6 +1,11 @@
 import webbrowser
 from fpdf import FPDF
 import os   # used to manipulate directories and files
+from filestack import Client
+from dotenv import load_dotenv
+
+load_dotenv() # loads variables from .env
+FILESTACK_API_KEY = os.getenv("FILESTACK_API_KEY")
 
 
 class PDFReport:
@@ -154,3 +159,21 @@ class PDFReport:
         os.chdir('generated_pdf_reports')
         pdf.output(self.filename)
         webbrowser.open(self.filename)
+
+
+class FileSharer:
+    """
+    Uploads a file to Filestack and returns a shareable URL.
+    """
+
+
+    def __init__(self, filepath, api_key=None):
+        self.filepath = filepath
+        self.api_key = api_key or FILESTACK_API_KEY
+
+        if not self.api_key:
+            raise ValueError("Filestack API key not found. Check your .env file.")
+    def share(self):
+        client = Client(self.api_key)
+        new_file_link = client.upload(filepath=self.filepath)
+        return new_file_link.url

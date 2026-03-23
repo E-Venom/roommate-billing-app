@@ -1,4 +1,4 @@
-from reports import PDFReport
+from reports import PDFReport, FileSharer
 from roommate import Bill, Roommate
 
 # CLI - COMMAND LINE (USER) INTERFACE IMPLEMENTATION
@@ -26,3 +26,6 @@ print(f'{roommate2.name} pays: ${roommate2_payment:.2f}')
 # Generate PDF Report
 pdf_report = PDFReport(filename=f"Report {the_bill.period}.pdf")
 pdf_report.generate_pdf(roommate1, roommate2, the_bill)
+
+file_share = FileSharer(filepath=pdf_report.filename)
+print(file_share.share())
