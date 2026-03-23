@@ -1,3 +1,4 @@
+import webbrowser
 from fpdf import FPDF
 
 class Bill:
@@ -73,23 +74,28 @@ class PDFReport:
         # Add house icon
         pdf.image(name="house.png", w=30, h=30)
 
-        # Set font a section of the PDF and insert title
+        # Set font for title section of the PDF and insert title
         pdf.set_font("Arial", size=24, style='B')
-        pdf.cell(w=0, h=80, txt="Roommates Bill", border=1, align='C', ln=1)
+        pdf.cell(w=0, h=80, txt="Roommates Bill", border=0, align='C', ln=1)
 
-        # Insert Period label and value
-        pdf.cell(w=100, h=40, txt="Period:", border=1)
-        pdf.cell(w=150, h=40, txt=bill.period, border=1, ln=1)
+        # Set font for period section of PDF and insert period label and value
+        pdf.set_font("Arial", size=14, style='B')
+        pdf.cell(w=100, h=40, txt="Period:", border=0)
+        pdf.cell(w=150, h=40, txt=bill.period, border=0, ln=1)
 
-        # Insert name and amount to pay for roommate1
-        pdf.cell(w=100, h=40, txt=roommate1.name, border=1)
-        pdf.cell(w=150, h=40, txt=roommate1_payment, border=1, ln=1)
+        # Set font for this section of PDF and insert name and amount to pay for roommate1 and roommate 2
+        pdf.set_font("Arial", size=12)
+        # roommate1 section
+        pdf.cell(w=100, h=25, txt=roommate1.name, border=0)
+        pdf.cell(w=150, h=25, txt=roommate1_payment, border=0, ln=1)
 
-        # Insert name and amount to pay for roommate2
-        pdf.cell(w=100, h=40, txt=roommate2.name, border=1)
-        pdf.cell(w=150, h=40, txt=roommate2_payment, border=1)
+        # roommate2 section
+        pdf.cell(w=100, h=25, txt=roommate2.name, border=0)
+        pdf.cell(w=150, h=25, txt=roommate2_payment, border=0)
 
         pdf.output(self.filename)
+
+        webbrowser.open(self.filename)
 
 # Testing what is implemented so far
 the_bill = Bill(amount=120, period="March 2022")
